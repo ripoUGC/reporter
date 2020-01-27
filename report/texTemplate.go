@@ -19,25 +19,24 @@ package report
 const defaultTemplate = `
 %use square brackets as golang text templating delimiters
 \documentclass{article}
-\usepackage{graphicx}
-\usepackage[margin=1in]{geometry}
-
+\usepackage{graphicx, xcolor}
+\usepackage[margin=0.4in,footskip=-0.5cm]{geometry}
 \graphicspath{ {images/} }
-\begin{document}
-\title{[[.Title]] [[if .VariableValues]] \\ \large [[.VariableValues]] [[end]] [[if .Description]] \\ \small [[.Description]] [[end]]}
-\date{[[.FromFormatted]]\\to\\[[.ToFormatted]]}
-\maketitle
-\begin{center}
-[[range .Panels]][[if .IsSingleStat]]\begin{minipage}{0.3\textwidth}
-\includegraphics[width=\textwidth]{image[[.Id]]}
-\end{minipage}
-[[else]]\par
-\vspace{0.5cm}
-\includegraphics[width=\textwidth]{image[[.Id]]}
-\par
-\vspace{0.5cm}
-[[end]][[end]]
+\definecolor{antiquewhite}{rgb}{0.99, 0.96, 0.92}
 
+\begin{document}
+\pagecolor{antiquewhite}
+\title{[[.Title]] [[if .VariableValues]] \\ \large [[.VariableValues]] [[end]] [[if .Description]] \\ \small [[.Description]] [[end]] \vspace{-1.0cm}}
+\date{[[.FromFormatted]] to [[.ToFormatted]]}
+\maketitle
+\begin{center}%
+[[range .Panels]][[if .IsPartialWidth]][[if .IsSingleStat]][[else]]\begin{minipage}{[[.Width]]\textwidth}%
+\includegraphics[width=\textwidth]{image[[.Id]]}%
+\end{minipage}\allowbreak\hspace{6px}\vspace{6px}[[end]]%
+[[else]]\begin{minipage}{[[.Width]]\textwidth}%
+\includegraphics[width=\textwidth]{image[[.Id]]}%
+\end{minipage}\vspace{6px}%
+[[end]][[end]]
 \end{center}
 \end{document}
 `
